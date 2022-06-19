@@ -1,0 +1,35 @@
+name: Azure Bicep Deployment
+
+on:
+  push:
+    branch: "main"
+  workflow_dispatch:
+
+env:
+  RG_NAME: "test-deployment"
+  AZURE_LOCATION: "westus3"
+
+jobs:
+  deploy resources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create RG
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          template: .\infra\templates\resource-group.bicep
+          parameters: resourceGroupName=${{ env.RG_NAME }} location=${{ env.AZURE_LOCATION}}
+
+      - name: Deploy Resources
+        uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: ${{ env.RG_NAME }}
+          template: ./infra/template/main.bicep
+          parameters: ./infra/parameters/main.bicep
+          failOnStdErr: false
