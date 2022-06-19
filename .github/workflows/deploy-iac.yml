@@ -2,7 +2,8 @@ name: Azure Bicep Deployment
 
 on:
   push:
-    branch: "main"
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -10,7 +11,7 @@ env:
   AZURE_LOCATION: "westus3"
 
 jobs:
-  deploy resources:
+  deploy-resources:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
