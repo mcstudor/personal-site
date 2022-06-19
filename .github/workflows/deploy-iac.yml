@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  RG_NAME: "test-deployment"
-  AZURE_LOCATION: "westus3"
+  RG_NAME: test-deployment
+  AZURE_LOCATION: westus3
 
 jobs:
   deploy-resources:
@@ -21,16 +21,15 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create RG
-        uses: azure/arm-deploy@v1
+        uses: Azure/CLI@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          template: .\infra\templates\resource-group.bicep
-          parameters: resourceGroupName=${{ env.RG_NAME }} location=${{ env.AZURE_LOCATION}}
+          inlineScript: |
+            az group create --name ${{ env.RG_NAME }} --location ${{ env.AZURE_LOCATION }}
 
       - name: Deploy Resources
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ env.RG_NAME }}
-          template: ./infra/template/main.bicep
-          parameters: ./infra/parameters/main.bicep
+          template: infra/templates/main.bicep
+          parameters: infra/parameters/main.params.json
           failOnStdErr: false
