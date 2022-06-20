@@ -1,0 +1,16 @@
+name: Build and Deploy app
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  deploy-resources:
+    runs-on: ubuntu-latest
+    steps:
+      name: 'Test'
+      run: echo 'Test'
+      

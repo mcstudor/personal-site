@@ -1,0 +1,14 @@
+name: Continuous Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-resources:
+    runs-on: ubuntu-latest
+    steps:
+      name: "Test"
+      run: echo 'Test'
