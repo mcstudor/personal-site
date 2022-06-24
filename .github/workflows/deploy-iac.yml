@@ -26,7 +26,15 @@ jobs:
           inlineScript: |
             az group create --name ${{ env.RG_NAME }} --location ${{ env.AZURE_LOCATION }}
 
-      - name: Deploy Resources
+      - name: Deploy Foundation Resources
+        uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: ${{ env.RG_NAME }}
+          template: infra/templates/foundation.bicep
+          parameters: infra/parameters/foundation.params.json
+          failOnStdErr: false
+
+      - name: Deploy Website Resources
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ env.RG_NAME }}
