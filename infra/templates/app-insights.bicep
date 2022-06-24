@@ -9,7 +9,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
   properties: {
     retentionInDays: 5
     sku: {
-      name: 'Free'
+      name: 'pergb2018'
     }
   }
 }

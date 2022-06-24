@@ -9,6 +9,11 @@ on:
 env:
   RG_NAME: test-deployment
   AZURE_LOCATION: westus3
+  FOUNDATION_PARAMS: 
+    - 'infra/parameters/acr.params.json'
+    - 'infra/parameters/config.params.json'
+    - 'infra/parameters/insights.params.json'
+    - 'infra/parameters/kv.params.json'
 
 jobs:
   deploy-resources:
@@ -26,18 +31,18 @@ jobs:
           inlineScript: |
             az group create --name ${{ env.RG_NAME }} --location ${{ env.AZURE_LOCATION }}
 
-      - name: Deploy Foundation Resources
+      - name: Deploy Resources
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ env.RG_NAME }}
           template: infra/templates/foundation.bicep
-          parameters: infra/parameters/foundation.params.json
+          parameters: ${{ join(env.FOUNDATION_PARAMS, ' ') }}
           failOnStdErr: false
 
-      - name: Deploy Website Resources
-        uses: azure/arm-deploy@v1
-        with:
-          resourceGroupName: ${{ env.RG_NAME }}
-          template: infra/templates/main.bicep
-          parameters: infra/parameters/main.params.json
-          failOnStdErr: false
+      # - name: Deploy Website Resources
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     resourceGroupName: ${{ env.RG_NAME }}
+      #     template: infra/templates/main.bicep
+      #     parameters: infra/parameters/main.params.json
+      #     failOnStdErr: false
