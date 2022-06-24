@@ -8,6 +8,9 @@ param kvName string
 @description('Globally unique name for Azure Container Registry')
 param acrName string
 
+@description('Name of the App Configuration store.')
+param configStoreName string
+
 param location string = resourceGroup().location
 param tenantId string = subscription().tenantId
 
@@ -27,3 +30,12 @@ module acr 'acr.bicep' = {
     location: location
   }
 }
+
+module appConfig 'app-config.bicep' = {
+  name: '${configStoreName}-deploy'
+  params: {
+    configStoreName: configStoreName
+    location: location
+  }
+}
+

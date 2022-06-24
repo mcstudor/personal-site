@@ -6,7 +6,10 @@
       "value": "marks-testKV"
     },
     "acrName": {
-        "value": "markstestacr"
+      "value": "markstestacr"
+    },
+    "configStoreName": {
+      "value": "markappconfig"
     }
   }
 }
